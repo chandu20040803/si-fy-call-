@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Secret Words</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Scientific Calculator</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Bootstrap CSS and Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   <style>
+    /* Global Styles */
     body {
       background: linear-gradient(135deg, #2ecc71, #3498db);
       font-family: Arial, sans-serif;
@@ -16,9 +16,58 @@
       margin: 0;
       padding: 0;
     }
-    .calculator-card {
+    /* Main Container */
+    .app-container {
+      margin: 20px;
+    }
+    /* Logo Styling */
+    .app-logo {
+      max-width: 100px;
+    }
+    /* Centered Logo Container */
+    .logo-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* Welcome Section Overlay */
+    #welcomeSection {
+      display: none;
+      text-align: center;
+      padding: 100px 20px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+    }
+    #welcomeSection h1 {
+      font-size: 3rem;
+      margin-top: 20px;
+    }
+    /* Notepad Header: welcome message and calendar */
+    .notepad-header {
+      overflow: auto;
+      margin-bottom: 10px;
+    }
+    .notepad-header .welcome {
+      float: left;
+    }
+    .notepad-header .calendar {
+      float: right;
+      width: 150px;
+    }
+    .notepad-header::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+    /* Card Styling */
+    .calculator-card, .card {
       max-width: 500px;
-      margin: 50px auto;
+      margin: 30px auto;
       border-radius: 15px;
       overflow: hidden;
       background: rgba(255, 255, 255, 0.1);
@@ -28,10 +77,11 @@
     .card-body {
       padding: 20px;
     }
+    /* Calculator Display */
     .display {
       height: 60px;
-      font-size: 28px;
-      text-align: right;
+      font-size: 20px;
+      text-align: center;
       padding: 10px 15px;
       border: none;
       border-radius: 10px;
@@ -40,11 +90,13 @@
       margin-bottom: 15px;
       transition: background-color 0.3s;
     }
+    /* Keypad Grid */
     .keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
+    /* Calculator Buttons */
     .btn-calculator {
       font-size: 18px;
       padding: 15px;
@@ -86,54 +138,89 @@
       background-color: #f8f9fa;
       color: #333;
     }
+    /* Hide sections by default */
+    #registrationSection, #loginSection, #notepadSection {
+      display: none;
+    }
+    /* Notepad Textarea */
+    .notepad-textarea {
+      width: 100%;
+      height: 300px;
+      background: #fff;
+      color: #333;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    /* Last Saved Date */
+    #lastSaved {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #333;
+    }
+    /* Container for Filtered Notes (if a date is selected) */
+    #filteredNotes {
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="calculator-card card shadow-lg">
+  <!-- Top Navbar with Online Logo -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+      <a class="navbar-brand" href="#">Secret Words</a>
+    </div>
+  </nav>
+
+  <!-- Welcome Section (Full-Screen Overlay) -->
+  <div id="welcomeSection">
+    <div class="logo-center">
+      <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+    </div>
+    <h1>Welcome, <span id="welcomeUser"></span>!</h1>
+  </div>
+
+  <div class="app-container">
+    <!-- CALCULATOR SECTION -->
+    <div id="calculatorSection" class="calculator-card card shadow-lg light-theme">
       <div class="card-body">
         <h4 class="card-title text-center mb-4">Scientific Calculator</h4>
         <input type="text" class="display form-control" id="display" disabled>
         <div id="history" class="mb-3 text-end"></div>
         <div class="keypad mb-3">
-          <!-- Memory Functions Row -->
+          <!-- Memory Buttons -->
           <button class="btn btn-memory btn-calculator" onclick="memoryClear()" data-bs-toggle="tooltip" title="Memory Clear">MC</button>
           <button class="btn btn-memory btn-calculator" onclick="memoryRecall()" data-bs-toggle="tooltip" title="Memory Recall">MR</button>
           <button class="btn btn-memory btn-calculator" onclick="memoryStore()" data-bs-toggle="tooltip" title="Memory Store">MS</button>
           <button class="btn btn-memory btn-calculator" onclick="memoryAdd()" data-bs-toggle="tooltip" title="Memory Add">M+</button>
           <button class="btn btn-memory btn-calculator" onclick="memorySubtract()" data-bs-toggle="tooltip" title="Memory Subtract">M-</button>
-          <!-- Empty cells to complete the row -->
-          <div></div>
-          <div></div>
-          <div></div>
-          
-          <!-- Standard Calculator Buttons -->
+          <div></div><div></div><div></div>
+          <!-- Standard Buttons -->
           <button class="btn btn-danger btn-calculator" onclick="clearDisplay()">C</button>
           <button class="btn btn-warning btn-calculator" onclick="backspace()"><i class="bi bi-backspace"></i></button>
           <button class="btn btn-info btn-calculator" onclick="absoluteValue()">|x|</button>
           <button class="btn btn-secondary btn-calculator" onclick="switchTheme()">Theme</button>
-          
           <button class="btn btn-light btn-calculator" onclick="appendNumber('7')">7</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('8')">8</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('9')">9</button>
           <button class="btn btn-primary btn-calculator" onclick="appendOperator('/')">/</button>
-          
           <button class="btn btn-light btn-calculator" onclick="appendNumber('4')">4</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('5')">5</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('6')">6</button>
           <button class="btn btn-primary btn-calculator" onclick="appendOperator('*')">*</button>
-          
           <button class="btn btn-light btn-calculator" onclick="appendNumber('1')">1</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('2')">2</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('3')">3</button>
           <button class="btn btn-primary btn-calculator" onclick="appendOperator('-')">-</button>
-          
           <button class="btn btn-light btn-calculator" onclick="appendNumber('0')">0</button>
           <button class="btn btn-light btn-calculator" onclick="appendNumber('.')">.</button>
           <button class="btn btn-danger btn-calculator" onclick="calculate()">=</button>
           <button class="btn btn-primary btn-calculator" onclick="appendOperator('+')">+</button>
-          
-          <!-- Scientific Functions -->
+          <!-- Scientific Buttons -->
           <button class="btn btn-outline-light btn-calculator" onclick="sin()">sin</button>
           <button class="btn btn-outline-light btn-calculator" onclick="cos()">cos</button>
           <button class="btn btn-outline-light btn-calculator" onclick="tan()">tan</button>
@@ -145,35 +232,124 @@
           <button class="btn btn-outline-light btn-calculator" onclick="sinh()">sinh</button>
           <button class="btn btn-outline-light btn-calculator" onclick="cosh()">cosh</button>
           <button class="btn btn-outline-light btn-calculator" onclick="tanh()">tanh</button>
-          <button class="btn btn-outline-info btn-calculator" onclick="login()">Login</button>
-          <button class="btn btn-outline-success btn-calculator" onclick="register()">Register</button>
+          <!-- Navigation Buttons -->
+          <button class="btn btn-outline-info btn-calculator" onclick="showRegistrationSection()">Register</button>
+          <button class="btn btn-outline-success btn-calculator" onclick="showLoginSection()">Login</button>
         </div>
       </div>
     </div>
-  </div>
+    <!-- END CALCULATOR SECTION -->
 
-  <!-- Personal Notes Modal -->
-  <div class="modal fade" id="personalNoteModal" tabindex="-1" aria-labelledby="personalNoteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="personalNoteModalLabel">Personal Notes</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- ====================== REGISTRATION SECTION ====================== -->
+    <div id="registrationSection" class="card shadow-lg p-4 light-theme">
+      <h4 class="text-center mb-4">Registration</h4>
+      <form id="registrationForm" onsubmit="event.preventDefault(); registerUser();">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" required>
         </div>
-        <div class="modal-body">
-          <textarea id="personalNotes" class="form-control" rows="10"></textarea>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lastName" required>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="savePersonalNotes()">Save</button>
+        <div class="mb-3">
+          <label for="contactNumber" class="form-label">Contact Number</label>
+          <input type="tel" class="form-control" id="contactNumber" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" required>
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="confirmPassword" required>
+        </div>
+        <div class="mb-3">
+          <label for="verificationNumber" class="form-label">Verification Number</label>
+          <input type="text" class="form-control" id="verificationNumber" placeholder="e.g., 123456" required>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Submit Registration</button>
+          <button type="button" class="btn btn-info" onclick="showLoginSection()">Return to Login</button>
+          <button type="button" class="btn btn-secondary" onclick="showCalculatorSection()">Return to Calculator</button>
+        </div>
+      </form>
+    </div>
+    <!-- END REGISTRATION SECTION -->
+
+    <!-- ====================== LOGIN SECTION ====================== -->
+    <div id="loginSection" class="card shadow-lg p-4 light-theme">
+      <h4 class="text-center mb-4">Login</h4>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="loginUsername" class="form-label">Username</label>
+          <input type="text" class="form-control" id="loginUsername" required>
+        </div>
+        <div class="mb-3">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="loginPassword" required>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-success" onclick="loginUser()">Login</button>
+          <button type="button" class="btn btn-info" onclick="showRegistrationSection()">Return to Registration</button>
+          <button type="button" class="btn btn-secondary" onclick="showCalculatorSection()">Return to Calculator</button>
+        </div>
+      </form>
+    </div>
+    <!-- END LOGIN SECTION -->
+
+    <!-- ====================== WELCOME SECTION ====================== -->
+    <div id="welcomeSection" class="card shadow-lg p-4 light-theme">
+      <div class="logo-center">
+        <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+      </div>
+      <h1 class="text-center">Welcome, <span id="welcomeUser"></span>!</h1>
+    </div>
+    <!-- END WELCOME SECTION -->
+
+    <!-- ====================== NOTEPAD SECTION ====================== -->
+    <div id="notepadSection" class="card shadow-lg p-4 light-theme">
+      <!-- Notepad Header with Welcome Message and Calendar Input -->
+      <div class="notepad-header">
+        <div class="welcome">
+          <h5 id="welcomeMessage">Hello, <span id="userName"></span></h5>
+        </div>
+        <div class="calendar">
+          <!-- Calendar input now triggers filtering -->
+          <input type="date" id="calendarInput" class="form-control" onchange="filterNotesByDate()">
         </div>
       </div>
+      <div class="logo-center">
+        <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+      </div>
+      <h4 class="text-center mb-4">Your Personal Notepad</h4>
+      <div class="mb-3">
+        <textarea id="notepadTextarea" class="notepad-textarea" placeholder="Write your thoughts here..."></textarea>
+      </div>
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary" onclick="saveNotepad()">Save</button>
+        <button type="button" class="btn btn-warning" onclick="logout()">Logout</button>
+      </div>
+      <p id="lastSaved"></p>
+      <!-- Container for Filtered Notes -->
+      <div id="filteredNotes"></div>
     </div>
+    <!-- END NOTEPAD SECTION -->
+
   </div>
 
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Global Variables
     let display = document.getElementById('display');
     let history = document.getElementById('history');
     let currentNumber = '';
@@ -181,298 +357,358 @@
     let operator = '';
     let currentTheme = 'light-theme';
     let themes = ['light-theme', 'dark-theme', 'neon-theme', 'auto-theme'];
-    let personalNumber = '';
-    let personalNotes = '';
-    let memory = 0; // Memory storage
+    let memory = 0;
+    let currentUser = null; // stores currently logged in user
 
+    /* CALCULATOR FUNCTIONS */
     function clearDisplay() {
       display.value = '';
       currentNumber = '';
       previousNumber = '';
       operator = '';
     }
-
     function backspace() {
       if (currentNumber !== '') {
         currentNumber = currentNumber.slice(0, -1);
         display.value = currentNumber;
       }
     }
-
     function appendNumber(number) {
       currentNumber += number;
       display.value = currentNumber;
-      checkPersonalNumber();
     }
-
     function appendOperator(op) {
+      if (!currentNumber) return;
       previousNumber = currentNumber;
       currentNumber = '';
       operator = op;
       display.value = previousNumber + ' ' + operator;
     }
-
     function calculate() {
-      if (operator === '') return;
+      if (operator === '' || !previousNumber || !currentNumber) return;
       let result;
       try {
         switch (operator) {
-          case '+':
-            result = parseFloat(previousNumber) + parseFloat(currentNumber);
+          case '+': 
+            result = parseFloat(previousNumber) + parseFloat(currentNumber); 
             break;
-          case '-':
-            result = parseFloat(previousNumber) - parseFloat(currentNumber);
+          case '-': 
+            result = parseFloat(previousNumber) - parseFloat(currentNumber); 
             break;
-          case '*':
-            result = parseFloat(previousNumber) * parseFloat(currentNumber);
+          case '*': 
+            result = parseFloat(previousNumber) * parseFloat(currentNumber); 
             break;
-          case '/':
-            result = parseFloat(currentNumber) !== 0 ? parseFloat(previousNumber) / parseFloat(currentNumber) : 'Error: Division by zero';
+          case '/': 
+            result = parseFloat(currentNumber) !== 0 ? parseFloat(previousNumber) / parseFloat(currentNumber) : 'Error: Div by 0'; 
             break;
-          case '^':
-            result = Math.pow(parseFloat(previousNumber), parseFloat(currentNumber));
+          case '^': 
+            result = Math.pow(parseFloat(previousNumber), parseFloat(currentNumber)); 
             break;
-          default:
+          default: 
             result = '';
         }
         display.value = result;
         currentNumber = result.toString();
         previousNumber = '';
         operator = '';
-        sendCalculationToServer(previousNumber, operator, currentNumber, result);
       } catch (e) {
-        display.value = 'Error: Invalid input';
+        display.value = 'Error';
       }
     }
-
     function absoluteValue() {
       try {
         let result = Math.abs(parseFloat(currentNumber));
         display.value = result;
         currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, '', '', result);
       } catch (e) {
-        display.value = 'Error: Invalid input';
+        display.value = 'Error';
       }
     }
-
-    function sin() {
-      try {
-        let result = Math.sin(parseFloat(currentNumber));
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'sin', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function sin() { 
+      try { 
+        let result = Math.sin(parseFloat(currentNumber)); 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function cos() {
-      try {
-        let result = Math.cos(parseFloat(currentNumber));
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'cos', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function cos() { 
+      try { 
+        let result = Math.cos(parseFloat(currentNumber)); 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function tan() {
-      try {
-        let result = Math.tan(parseFloat(currentNumber));
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'tan', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function tan() { 
+      try { 
+        let result = Math.tan(parseFloat(currentNumber)); 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function exp() {
-      try {
-        let result = Math.exp(parseFloat(currentNumber));
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'exp', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function exp() { 
+      try { 
+        let result = Math.exp(parseFloat(currentNumber)); 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function log() {
-      try {
-        if (parseFloat(currentNumber) > 0) {
-          let result = Math.log(parseFloat(currentNumber));
-          display.value = result;
-          currentNumber = result.toString();
-          sendCalculationToServer(currentNumber, 'log', '', result);
-        } else {
-          display.value = 'Error: Logarithm of non-positive number';
-        }
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function log() { 
+      try { 
+        if (parseFloat(currentNumber) > 0) { 
+          let result = Math.log(parseFloat(currentNumber)); 
+          display.value = result; 
+          currentNumber = result.toString(); 
+        } else { 
+          display.value = 'Error: log of <= 0'; 
+        } 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function sqrt() {
-      try {
-        if (parseFloat(currentNumber) >= 0) {
-          let result = Math.sqrt(parseFloat(currentNumber));
-          display.value = result;
-          currentNumber = result.toString();
-          sendCalculationToServer(currentNumber, 'sqrt', '', result);
-        } else {
-          display.value = 'Error: Negative number';
-        }
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function sqrt() { 
+      try { 
+        if (parseFloat(currentNumber) >= 0) { 
+          let result = Math.sqrt(parseFloat(currentNumber)); 
+          display.value = result; 
+          currentNumber = result.toString(); 
+        } else { 
+          display.value = 'Error: sqrt of < 0'; 
+        } 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function power() {
-      previousNumber = currentNumber;
-      currentNumber = '';
-      operator = '^';
-      display.value = previousNumber + ' ' + operator;
+    function power() { 
+      if (!currentNumber) return; 
+      previousNumber = currentNumber; 
+      currentNumber = ''; 
+      operator = '^'; 
+      display.value = previousNumber + ' ' + operator; 
     }
-
-    function oneOverX() {
-      try {
-        if (parseFloat(currentNumber) !== 0) {
-          let result = 1 / parseFloat(currentNumber);
-          display.value = result;
-          currentNumber = result.toString();
-          sendCalculationToServer(currentNumber, '1/', '', result);
-        } else {
-          display.value = 'Error: Division by zero';
-        }
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function oneOverX() { 
+      try { 
+        if (parseFloat(currentNumber) !== 0) { 
+          let result = 1 / parseFloat(currentNumber); 
+          display.value = result; 
+          currentNumber = result.toString(); 
+        } else { 
+          display.value = 'Error: Div by 0'; 
+        } 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function sinh() {
-      try {
-        let result = (Math.exp(parseFloat(currentNumber)) - Math.exp(-parseFloat(currentNumber))) / 2;
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'sinh', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function sinh() { 
+      try { 
+        let x = parseFloat(currentNumber); 
+        let result = (Math.exp(x) - Math.exp(-x)) / 2; 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function cosh() {
-      try {
-        let result = (Math.exp(parseFloat(currentNumber)) + Math.exp(-parseFloat(currentNumber))) / 2;
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'cosh', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function cosh() { 
+      try { 
+        let x = parseFloat(currentNumber); 
+        let result = (Math.exp(x) + Math.exp(-x)) / 2; 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
-    function tanh() {
-      try {
-        let result = (Math.exp(parseFloat(currentNumber)) - Math.exp(-parseFloat(currentNumber))) /
-                     (Math.exp(parseFloat(currentNumber)) + Math.exp(-parseFloat(currentNumber)));
-        display.value = result;
-        currentNumber = result.toString();
-        sendCalculationToServer(currentNumber, 'tanh', '', result);
-      } catch (e) {
-        display.value = 'Error: Invalid input';
-      }
+    function tanh() { 
+      try { 
+        let x = parseFloat(currentNumber); 
+        let result = (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)); 
+        display.value = result; 
+        currentNumber = result.toString(); 
+      } catch (e) { 
+        display.value = 'Error'; 
+      } 
     }
-
     function switchTheme() {
+      let cardElement = document.querySelector('.calculator-card');
       let index = themes.indexOf(currentTheme);
       currentTheme = themes[(index + 1) % themes.length];
-      document.querySelector('.calculator-card').className = 'calculator-card card shadow-lg ' + currentTheme;
+      cardElement.className = 'calculator-card card shadow-lg ' + currentTheme;
       localStorage.setItem('theme', currentTheme);
     }
-
-    function sendCalculationToServer(num1, op, num2, result) {
-      fetch('/calculate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ num1, op, num2, result })
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+    
+    /* MEMORY FUNCTIONS */
+    function memoryStore() { memory = parseFloat(currentNumber) || 0; }
+    function memoryRecall() { currentNumber = memory.toString(); display.value = currentNumber; }
+    function memoryClear() { memory = 0; }
+    function memoryAdd() { memory += parseFloat(currentNumber) || 0; }
+    function memorySubtract() { memory -= parseFloat(currentNumber) || 0; }
+    
+    /* PAGE NAVIGATION FUNCTIONS */
+    function showCalculatorSection() {
+      document.getElementById('calculatorSection').style.display = 'block';
+      document.getElementById('registrationSection').style.display = 'none';
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('notepadSection').style.display = 'none';
+      document.getElementById('welcomeSection').style.display = 'none';
     }
-
-    function login() {
-      let username = 'user';
-      let password = 'password';
-      fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+    function showRegistrationSection() {
+      document.getElementById('calculatorSection').style.display = 'none';
+      document.getElementById('registrationSection').style.display = 'block';
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('notepadSection').style.display = 'none';
+      document.getElementById('welcomeSection').style.display = 'none';
     }
-
-    function register() {
-      let username = 'user';
-      let password = 'password';
-      fetch('/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+    function showLoginSection() {
+      document.getElementById('calculatorSection').style.display = 'none';
+      document.getElementById('registrationSection').style.display = 'none';
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('notepadSection').style.display = 'none';
+      document.getElementById('welcomeSection').style.display = 'none';
     }
-
-    function checkPersonalNumber() {
-      if (currentNumber.length === 10 && currentNumber === personalNumber) {
-        const modal = new bootstrap.Modal(document.getElementById('personalNoteModal'), { keyboard: false });
-        modal.show();
+    function showWelcomeSection() {
+      document.getElementById('calculatorSection').style.display = 'none';
+      document.getElementById('registrationSection').style.display = 'none';
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('welcomeSection').style.display = 'block';
+      // After 2 seconds, transition to Notepad Section
+      setTimeout(() => {
+        showNotepadSection();
+      }, 2000);
+    }
+    function showNotepadSection() {
+      document.getElementById('calculatorSection').style.display = 'none';
+      document.getElementById('registrationSection').style.display = 'none';
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('welcomeSection').style.display = 'none';
+      document.getElementById('notepadSection').style.display = 'block';
+      loadNotepad();
+    }
+    
+    /* REGISTRATION & LOGIN LOGIC USING LOCALSTORAGE */
+    function registerUser() {
+      let firstName       = document.getElementById('firstName').value.trim();
+      let lastName        = document.getElementById('lastName').value.trim();
+      let contactNumber   = document.getElementById('contactNumber').value.trim();
+      let email           = document.getElementById('email').value.trim();
+      let username        = document.getElementById('username').value.trim();
+      let password        = document.getElementById('password').value;
+      let confirmPassword = document.getElementById('confirmPassword').value;
+      let verification    = document.getElementById('verificationNumber').value.trim();
+    
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      if (!verification) {
+        alert("Please enter a verification number.");
+        return;
+      }
+    
+      let userData = { firstName, lastName, contactNumber, email, username, password, verification };
+      localStorage.setItem('secretWordsUser', JSON.stringify(userData));
+      currentUser = username;
+      document.getElementById('registrationForm').reset();
+      showLoginSection();
+    }
+    
+    function loginUser() {
+      let loginUsername = document.getElementById('loginUsername').value.trim();
+      let loginPassword = document.getElementById('loginPassword').value;
+      let storedData = localStorage.getItem('secretWordsUser');
+      if (!storedData) {
+        alert("No user registered yet!");
+        return;
+      }
+      let userData = JSON.parse(storedData);
+      if (loginUsername === userData.username && loginPassword === userData.password) {
+        currentUser = userData.username;
+        display.value = "User: " + userData.username + " | Pass: " + userData.password;
+        // Set welcome messages in Welcome and Notepad sections
+        document.getElementById("welcomeUser").innerText = currentUser;
+        document.getElementById("userName").innerText = currentUser;
+        // Show welcome overlay then transition to notepad
+        showWelcomeSection();
+      } else {
+        alert("Invalid credentials. Please try again.");
       }
     }
-
-    function savePersonalNotes() {
-      personalNotes = document.getElementById('personalNotes').value;
-      localStorage.setItem('personalNotes', personalNotes);
-      const modal = bootstrap.Modal.getInstance(document.getElementById('personalNoteModal'));
-      modal.hide();
+    
+    function logout() {
+      alert("Logged out!");
+      currentUser = null;
+      showCalculatorSection();
     }
-
-    // Memory Functions
-    function memoryStore() {
-      memory = parseFloat(currentNumber) || 0;
+    
+    /* NOTEPAD LOGIC WITH TIMESTAMP & SIMULATED DATABASE STORAGE */
+    function saveNotepad() {
+      let notes = document.getElementById('notepadTextarea').value;
+      if (!currentUser) {
+        alert("Please log in to save your notes.");
+        return;
+      }
+      let now = new Date();
+      let timestamp = now.toLocaleString();
+      let noteData = { notes, timestamp, user: currentUser };
+      let userNotesKey = "notes_" + currentUser;
+      let existingNotes = JSON.parse(localStorage.getItem(userNotesKey)) || [];
+      existingNotes.push(noteData);
+      localStorage.setItem(userNotesKey, JSON.stringify(existingNotes));
+      document.getElementById('lastSaved').innerText = "Last Saved On: " + timestamp;
+      alert("Notes saved on " + timestamp);
     }
-    function memoryRecall() {
-      currentNumber = memory.toString();
-      display.value = currentNumber;
+    
+    function loadNotepad() {
+      if (!currentUser) return;
+      let userNotesKey = "notes_" + currentUser;
+      let existingNotes = JSON.parse(localStorage.getItem(userNotesKey));
+      if (existingNotes && existingNotes.length > 0) {
+        document.getElementById('notepadTextarea').value = existingNotes[existingNotes.length - 1].notes;
+        document.getElementById('lastSaved').innerText = "Last Saved On: " + existingNotes[existingNotes.length - 1].timestamp;
+      }
     }
-    function memoryClear() {
-      memory = 0;
+    
+    /* FILTER NOTES BASED ON SELECTED CALENDAR DATE */
+    function filterNotesByDate() {
+      let selectedDate = document.getElementById('calendarInput').value; // format: YYYY-MM-DD
+      if (!selectedDate || !currentUser) {
+        document.getElementById('filteredNotes').innerHTML = '';
+        return;
+      }
+      let userNotesKey = "notes_" + currentUser;
+      let existingNotes = JSON.parse(localStorage.getItem(userNotesKey)) || [];
+      // Filter notes where the timestamp date matches the selected date
+      let filtered = existingNotes.filter(note => {
+        let noteDate = new Date(note.timestamp).toISOString().split('T')[0];
+        return noteDate === selectedDate;
+      });
+      let container = document.getElementById('filteredNotes');
+      if (filtered.length > 0) {
+        container.innerHTML = '<h6>Notes for ' + selectedDate + ':</h6>';
+        filtered.forEach(note => {
+          container.innerHTML += '<p><em>' + note.timestamp + '</em>: ' + note.notes + '</p>';
+        });
+      } else {
+        container.innerHTML = '<p>No notes found for ' + selectedDate + '.</p>';
+      }
     }
-    function memoryAdd() {
-      memory += parseFloat(currentNumber) || 0;
-    }
-    function memorySubtract() {
-      memory -= parseFloat(currentNumber) || 0;
-    }
-
+    
+    // On window load: Set theme and initialize tooltips
     window.onload = function() {
       currentTheme = localStorage.getItem('theme') || 'light-theme';
       document.querySelector('.calculator-card').className = 'calculator-card card shadow-lg ' + currentTheme;
       if (currentTheme === 'auto-theme') {
-        document.querySelector('.calculator-card').className = 'calculator-card card shadow-lg ' +
-          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme');
+        let isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.querySelector('.calculator-card').className = 'calculator-card card shadow-lg ' + (isDarkMode ? 'dark-theme' : 'light-theme');
       }
-      personalNumber = '1234567890';
-      personalNotes = localStorage.getItem('personalNotes') || '';
-      document.getElementById('personalNotes').value = personalNotes;
-      // Initialize Bootstrap tooltips
+      loadNotepad();
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
       tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
