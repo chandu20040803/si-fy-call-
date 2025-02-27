@@ -3,102 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <title>Secret Words</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CSS and Icons -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   <style>
     /* Global Styles */
     body {
       background: linear-gradient(135deg, #2ecc71, #3498db);
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', Arial, sans-serif;
       color: #fff;
       margin: 0;
       padding: 0;
     }
-    /* Main Container */
     .app-container {
-      margin: 20px;
+      margin: 10px;
+      padding-bottom: 20px;
     }
-    /* Logo Styling */
+    /* Header */
+    .app-header {
+      background: url('https://via.placeholder.com/600x150') no-repeat center center;
+      background-size: cover;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+    }
+    .app-header .navbar-brand {
+      font-size: 24px;
+      font-weight: 700;
+    }
     .app-logo {
-      max-width: 100px;
+      max-width: 70px;
     }
-    /* Centered Logo Container */
     .logo-center {
       text-align: center;
       margin-bottom: 20px;
     }
-    /* Welcome Section Overlay */
-    #welcomeSection {
-      display: none;
-      text-align: center;
-      padding: 100px 20px;
-      background: rgba(0,0,0,0.8);
-      color: #fff;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
-    }
-    #welcomeSection h1 {
-      font-size: 3rem;
-      margin-top: 20px;
-    }
-    /* Notepad Header: welcome message and calendar */
-    .notepad-header {
-      overflow: auto;
-      margin-bottom: 10px;
-    }
-    .notepad-header .welcome {
-      float: left;
-    }
-    .notepad-header .calendar {
-      float: right;
-      width: 150px;
-    }
-    .notepad-header::after {
-      content: "";
-      clear: both;
-      display: table;
-    }
     /* Card Styling */
     .calculator-card, .card {
       max-width: 500px;
-      margin: 30px auto;
+      margin: 20px auto;
       border-radius: 15px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255,255,255,0.1);
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      box-shadow: 0 8px 32px rgba(31,38,135,0.37);
+      transition: transform 0.3s;
     }
-    .card-body {
-      padding: 20px;
+    .card:hover {
+      transform: translateY(-5px);
     }
-    /* Calculator Display */
+    .card-body { padding: 20px; }
     .display {
       height: 60px;
-      font-size: 20px;
+      font-size: 22px;
       text-align: center;
       padding: 10px 15px;
       border: none;
       border-radius: 10px;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255,255,255,0.8);
       color: #333;
       margin-bottom: 15px;
       transition: background-color 0.3s;
     }
-    /* Keypad Grid */
     .keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
-    /* Calculator Buttons */
     .btn-calculator {
-      font-size: 18px;
+      font-size: 20px;
       padding: 15px;
       border-radius: 8px;
       transition: transform 0.1s, box-shadow 0.2s;
@@ -107,42 +84,17 @@
       transform: scale(1.05);
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    .btn-memory {
-      background-color: #ff9800;
-      color: #fff;
-    }
-    /* Theme Overrides */
-    .light-theme .card {
-      background-color: #fff;
-      color: #333;
-    }
-    .dark-theme .card {
-      background-color: #343a40;
-      color: #fff;
-    }
-    .dark-theme .display {
-      background-color: #495057;
-      color: #fff;
-    }
-    .neon-theme .card {
-      background-color: #111;
-      color: #0f0;
-      border: 1px solid #0f0;
-    }
-    .neon-theme .display {
-      background-color: #222;
-      color: #0f0;
-      border: 2px solid #0f0;
-    }
-    .auto-theme .card {
-      background-color: #f8f9fa;
-      color: #333;
-    }
-    /* Hide sections by default */
-    #registrationSection, #loginSection, #notepadSection {
-      display: none;
-    }
-    /* Notepad Textarea */
+    .btn-memory { background-color: #ff9800; color: #fff; }
+    /* Themes */
+    .light-theme .card { background-color: #fff; color: #333; }
+    .dark-theme .card { background-color: #343a40; color: #fff; }
+    .dark-theme .display { background-color: #495057; color: #fff; }
+    .neon-theme .card { background-color: #111; color: #0f0; border: 1px solid #0f0; }
+    .neon-theme .display { background-color: #222; color: #0f0; border: 2px solid #0f0; }
+    .auto-theme .card { background-color: #f8f9fa; color: #333; }
+    /* Sections Visibility */
+    #registrationSection, #loginSection, #notepadSection { display: none; }
+    /* Notepad Styling */
     .notepad-textarea {
       width: 100%;
       height: 300px;
@@ -150,56 +102,110 @@
       color: #333;
       padding: 10px;
       border-radius: 5px;
+      font-size: 16px;
+      resize: none;
     }
-    /* Last Saved Date */
     #lastSaved {
       margin-top: 10px;
       font-size: 0.9em;
       color: #333;
     }
-    /* Container for Filtered Notes (if a date is selected) */
-    #filteredNotes {
-      background: rgba(255,255,255,0.9);
-      color: #333;
-      padding: 10px;
+    .calendar-section {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 120px;
+    }
+    .online-search {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .online-search input {
+      width: 70%;
+      padding: 8px;
       border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    .online-search button {
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    #realTimeClock {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    /* Voice Message Section */
+    .voice-message-section {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .voice-message-section button {
+      font-size: 28px;
+      padding: 10px;
+      border: none;
+      background: none;
+      color: #fff;
+    }
+    #voiceMessages audio {
       margin-top: 10px;
+      display: block;
+      width: 100%;
+      border-radius: 5px;
+    }
+    /* Image Capture Section */
+    .image-capture-section {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .image-capture-section input { margin: 0 auto; }
+    #imagePreview img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    /* Media Query for Small Devices */
+    @media (max-width: 576px) {
+      .card { margin: 10px; }
+      .display { font-size: 18px; }
+      .btn-calculator { font-size: 16px; padding: 12px; }
+      .online-search input { font-size: 14px; }
+      #realTimeClock { font-size: 16px; }
     }
   </style>
 </head>
 <body>
-  <!-- Top Navbar with Online Logo -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark app-header">
     <div class="container-fluid">
-      <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
-      <a class="navbar-brand" href="#">Secret Words</a>
+      <a class="navbar-brand" href="#">
+        <img src="https://via.placeholder.com/70?text=Logo" alt="Secret Words Logo" class="app-logo">
+        Secret Words
+      </a>
     </div>
   </nav>
 
-  <!-- Welcome Section (Full-Screen Overlay) -->
-  <div id="welcomeSection">
-    <div class="logo-center">
-      <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
-    </div>
-    <h1>Welcome, <span id="welcomeUser"></span>!</h1>
-  </div>
-
   <div class="app-container">
-    <!-- CALCULATOR SECTION -->
+    <!-- Calculator Section (unchanged) -->
     <div id="calculatorSection" class="calculator-card card shadow-lg light-theme">
       <div class="card-body">
         <h4 class="card-title text-center mb-4">Scientific Calculator</h4>
         <input type="text" class="display form-control" id="display" disabled>
         <div id="history" class="mb-3 text-end"></div>
         <div class="keypad mb-3">
-          <!-- Memory Buttons -->
+          <!-- Memory Functions Row -->
           <button class="btn btn-memory btn-calculator" onclick="memoryClear()" data-bs-toggle="tooltip" title="Memory Clear">MC</button>
           <button class="btn btn-memory btn-calculator" onclick="memoryRecall()" data-bs-toggle="tooltip" title="Memory Recall">MR</button>
           <button class="btn btn-memory btn-calculator" onclick="memoryStore()" data-bs-toggle="tooltip" title="Memory Store">MS</button>
           <button class="btn btn-memory btn-calculator" onclick="memoryAdd()" data-bs-toggle="tooltip" title="Memory Add">M+</button>
           <button class="btn btn-memory btn-calculator" onclick="memorySubtract()" data-bs-toggle="tooltip" title="Memory Subtract">M-</button>
           <div></div><div></div><div></div>
-          <!-- Standard Buttons -->
+          <!-- Standard Calculator Buttons -->
           <button class="btn btn-danger btn-calculator" onclick="clearDisplay()">C</button>
           <button class="btn btn-warning btn-calculator" onclick="backspace()"><i class="bi bi-backspace"></i></button>
           <button class="btn btn-info btn-calculator" onclick="absoluteValue()">|x|</button>
@@ -220,7 +226,7 @@
           <button class="btn btn-light btn-calculator" onclick="appendNumber('.')">.</button>
           <button class="btn btn-danger btn-calculator" onclick="calculate()">=</button>
           <button class="btn btn-primary btn-calculator" onclick="appendOperator('+')">+</button>
-          <!-- Scientific Buttons -->
+          <!-- Scientific Functions -->
           <button class="btn btn-outline-light btn-calculator" onclick="sin()">sin</button>
           <button class="btn btn-outline-light btn-calculator" onclick="cos()">cos</button>
           <button class="btn btn-outline-light btn-calculator" onclick="tan()">tan</button>
@@ -238,9 +244,7 @@
         </div>
       </div>
     </div>
-    <!-- END CALCULATOR SECTION -->
-
-    <!-- ====================== REGISTRATION SECTION ====================== -->
+    <!-- Registration Section (unchanged) -->
     <div id="registrationSection" class="card shadow-lg p-4 light-theme">
       <h4 class="text-center mb-4">Registration</h4>
       <form id="registrationForm" onsubmit="event.preventDefault(); registerUser();">
@@ -283,9 +287,7 @@
         </div>
       </form>
     </div>
-    <!-- END REGISTRATION SECTION -->
-
-    <!-- ====================== LOGIN SECTION ====================== -->
+    <!-- Login Section (unchanged) -->
     <div id="loginSection" class="card shadow-lg p-4 light-theme">
       <h4 class="text-center mb-4">Login</h4>
       <form id="loginForm">
@@ -304,305 +306,98 @@
         </div>
       </form>
     </div>
-    <!-- END LOGIN SECTION -->
-
-    <!-- ====================== WELCOME SECTION ====================== -->
-    <div id="welcomeSection" class="card shadow-lg p-4 light-theme">
+    <!-- Notepad Section -->
+    <div id="notepadSection" class="card shadow-lg p-4 light-theme" style="position: relative;">
+      <!-- Calendar (Top Right) -->
+      <div class="calendar-section">
+        <input type="date" class="form-control form-control-sm">
+      </div>
+      <!-- Real-Time Clock -->
+      <div id="realTimeClock"></div>
+      <!-- Centered Logo and Welcome Message -->
       <div class="logo-center">
-        <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+        <a href="#">
+          <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+        </a>
       </div>
-      <h1 class="text-center">Welcome, <span id="welcomeUser"></span>!</h1>
-    </div>
-    <!-- END WELCOME SECTION -->
-
-    <!-- ====================== NOTEPAD SECTION ====================== -->
-    <div id="notepadSection" class="card shadow-lg p-4 light-theme">
-      <!-- Notepad Header with Welcome Message and Calendar Input -->
-      <div class="notepad-header">
-        <div class="welcome">
-          <h5 id="welcomeMessage">Hello, <span id="userName"></span></h5>
-        </div>
-        <div class="calendar">
-          <!-- Calendar input now triggers filtering -->
-          <input type="date" id="calendarInput" class="form-control" onchange="filterNotesByDate()">
-        </div>
+      <div class="text-center mb-4">
+        <h4>Your Personal Notepad</h4>
+        <p id="welcomeMessage"></p>
       </div>
-      <div class="logo-center">
-        <img src="https://via.placeholder.com/100?text=Secret+Words" alt="Secret Words Logo" class="app-logo">
+      <!-- Online Search Section -->
+      <div class="online-search">
+        <input type="text" id="onlineSearchInput" placeholder="Search Secret Words Online">
+        <button class="btn btn-success" onclick="searchOnline()"><i class="bi bi-search"></i> Search</button>
       </div>
-      <h4 class="text-center mb-4">Your Personal Notepad</h4>
+      <!-- Notepad Text Area -->
       <div class="mb-3">
         <textarea id="notepadTextarea" class="notepad-textarea" placeholder="Write your thoughts here..."></textarea>
       </div>
+      <!-- NEW: Voice Message Section BELOW the text area -->
+      <div class="voice-message-section">
+        <button class="btn btn-secondary" id="voiceMsgBtn"><i class="bi bi-mic"></i></button>
+        <p>Tap to record voice message</p>
+        <div id="voiceMessages"></div>
+      </div>
+      <!-- Image Capture Section -->
+      <div class="image-capture-section">
+        <input type="file" accept="image/*" capture="environment" id="imageInput">
+        <div id="imagePreview" class="mt-2"></div>
+      </div>
+      <!-- Save and Logout Buttons -->
       <div class="d-grid gap-2">
         <button type="button" class="btn btn-primary" onclick="saveNotepad()">Save</button>
         <button type="button" class="btn btn-warning" onclick="logout()">Logout</button>
       </div>
       <p id="lastSaved"></p>
-      <!-- Container for Filtered Notes -->
-      <div id="filteredNotes"></div>
     </div>
-    <!-- END NOTEPAD SECTION -->
-
   </div>
 
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Global Variables
-    let display = document.getElementById('display');
-    let history = document.getElementById('history');
-    let currentNumber = '';
-    let previousNumber = '';
-    let operator = '';
     let currentTheme = 'light-theme';
     let themes = ['light-theme', 'dark-theme', 'neon-theme', 'auto-theme'];
-    let memory = 0;
     let currentUser = null; // stores currently logged in user
 
-    /* CALCULATOR FUNCTIONS */
-    function clearDisplay() {
-      display.value = '';
-      currentNumber = '';
-      previousNumber = '';
-      operator = '';
-    }
-    function backspace() {
-      if (currentNumber !== '') {
-        currentNumber = currentNumber.slice(0, -1);
-        display.value = currentNumber;
-      }
-    }
-    function appendNumber(number) {
-      currentNumber += number;
-      display.value = currentNumber;
-    }
-    function appendOperator(op) {
-      if (!currentNumber) return;
-      previousNumber = currentNumber;
-      currentNumber = '';
-      operator = op;
-      display.value = previousNumber + ' ' + operator;
-    }
-    function calculate() {
-      if (operator === '' || !previousNumber || !currentNumber) return;
-      let result;
-      try {
-        switch (operator) {
-          case '+': 
-            result = parseFloat(previousNumber) + parseFloat(currentNumber); 
-            break;
-          case '-': 
-            result = parseFloat(previousNumber) - parseFloat(currentNumber); 
-            break;
-          case '*': 
-            result = parseFloat(previousNumber) * parseFloat(currentNumber); 
-            break;
-          case '/': 
-            result = parseFloat(currentNumber) !== 0 ? parseFloat(previousNumber) / parseFloat(currentNumber) : 'Error: Div by 0'; 
-            break;
-          case '^': 
-            result = Math.pow(parseFloat(previousNumber), parseFloat(currentNumber)); 
-            break;
-          default: 
-            result = '';
-        }
-        display.value = result;
-        currentNumber = result.toString();
-        previousNumber = '';
-        operator = '';
-      } catch (e) {
-        display.value = 'Error';
-      }
-    }
-    function absoluteValue() {
-      try {
-        let result = Math.abs(parseFloat(currentNumber));
-        display.value = result;
-        currentNumber = result.toString();
-      } catch (e) {
-        display.value = 'Error';
-      }
-    }
-    function sin() { 
-      try { 
-        let result = Math.sin(parseFloat(currentNumber)); 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function cos() { 
-      try { 
-        let result = Math.cos(parseFloat(currentNumber)); 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function tan() { 
-      try { 
-        let result = Math.tan(parseFloat(currentNumber)); 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function exp() { 
-      try { 
-        let result = Math.exp(parseFloat(currentNumber)); 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function log() { 
-      try { 
-        if (parseFloat(currentNumber) > 0) { 
-          let result = Math.log(parseFloat(currentNumber)); 
-          display.value = result; 
-          currentNumber = result.toString(); 
-        } else { 
-          display.value = 'Error: log of <= 0'; 
-        } 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function sqrt() { 
-      try { 
-        if (parseFloat(currentNumber) >= 0) { 
-          let result = Math.sqrt(parseFloat(currentNumber)); 
-          display.value = result; 
-          currentNumber = result.toString(); 
-        } else { 
-          display.value = 'Error: sqrt of < 0'; 
-        } 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function power() { 
-      if (!currentNumber) return; 
-      previousNumber = currentNumber; 
-      currentNumber = ''; 
-      operator = '^'; 
-      display.value = previousNumber + ' ' + operator; 
-    }
-    function oneOverX() { 
-      try { 
-        if (parseFloat(currentNumber) !== 0) { 
-          let result = 1 / parseFloat(currentNumber); 
-          display.value = result; 
-          currentNumber = result.toString(); 
-        } else { 
-          display.value = 'Error: Div by 0'; 
-        } 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function sinh() { 
-      try { 
-        let x = parseFloat(currentNumber); 
-        let result = (Math.exp(x) - Math.exp(-x)) / 2; 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function cosh() { 
-      try { 
-        let x = parseFloat(currentNumber); 
-        let result = (Math.exp(x) + Math.exp(-x)) / 2; 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function tanh() { 
-      try { 
-        let x = parseFloat(currentNumber); 
-        let result = (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)); 
-        display.value = result; 
-        currentNumber = result.toString(); 
-      } catch (e) { 
-        display.value = 'Error'; 
-      } 
-    }
-    function switchTheme() {
-      let cardElement = document.querySelector('.calculator-card');
-      let index = themes.indexOf(currentTheme);
-      currentTheme = themes[(index + 1) % themes.length];
-      cardElement.className = 'calculator-card card shadow-lg ' + currentTheme;
-      localStorage.setItem('theme', currentTheme);
-    }
-    
-    /* MEMORY FUNCTIONS */
-    function memoryStore() { memory = parseFloat(currentNumber) || 0; }
-    function memoryRecall() { currentNumber = memory.toString(); display.value = currentNumber; }
-    function memoryClear() { memory = 0; }
-    function memoryAdd() { memory += parseFloat(currentNumber) || 0; }
-    function memorySubtract() { memory -= parseFloat(currentNumber) || 0; }
-    
-    /* PAGE NAVIGATION FUNCTIONS */
+    // Page Navigation Functions
     function showCalculatorSection() {
       document.getElementById('calculatorSection').style.display = 'block';
       document.getElementById('registrationSection').style.display = 'none';
       document.getElementById('loginSection').style.display = 'none';
       document.getElementById('notepadSection').style.display = 'none';
-      document.getElementById('welcomeSection').style.display = 'none';
     }
     function showRegistrationSection() {
       document.getElementById('calculatorSection').style.display = 'none';
       document.getElementById('registrationSection').style.display = 'block';
       document.getElementById('loginSection').style.display = 'none';
       document.getElementById('notepadSection').style.display = 'none';
-      document.getElementById('welcomeSection').style.display = 'none';
     }
     function showLoginSection() {
       document.getElementById('calculatorSection').style.display = 'none';
       document.getElementById('registrationSection').style.display = 'none';
       document.getElementById('loginSection').style.display = 'block';
       document.getElementById('notepadSection').style.display = 'none';
-      document.getElementById('welcomeSection').style.display = 'none';
-    }
-    function showWelcomeSection() {
-      document.getElementById('calculatorSection').style.display = 'none';
-      document.getElementById('registrationSection').style.display = 'none';
-      document.getElementById('loginSection').style.display = 'none';
-      document.getElementById('welcomeSection').style.display = 'block';
-      // After 2 seconds, transition to Notepad Section
-      setTimeout(() => {
-        showNotepadSection();
-      }, 2000);
     }
     function showNotepadSection() {
       document.getElementById('calculatorSection').style.display = 'none';
       document.getElementById('registrationSection').style.display = 'none';
       document.getElementById('loginSection').style.display = 'none';
-      document.getElementById('welcomeSection').style.display = 'none';
       document.getElementById('notepadSection').style.display = 'block';
       loadNotepad();
     }
     
-    /* REGISTRATION & LOGIN LOGIC USING LOCALSTORAGE */
+    // Registration & Login Logic using localStorage
     function registerUser() {
-      let firstName       = document.getElementById('firstName').value.trim();
-      let lastName        = document.getElementById('lastName').value.trim();
-      let contactNumber   = document.getElementById('contactNumber').value.trim();
-      let email           = document.getElementById('email').value.trim();
-      let username        = document.getElementById('username').value.trim();
-      let password        = document.getElementById('password').value;
+      let firstName = document.getElementById('firstName').value.trim();
+      let lastName = document.getElementById('lastName').value.trim();
+      let contactNumber = document.getElementById('contactNumber').value.trim();
+      let email = document.getElementById('email').value.trim();
+      let username = document.getElementById('username').value.trim();
+      let password = document.getElementById('password').value;
       let confirmPassword = document.getElementById('confirmPassword').value;
-      let verification    = document.getElementById('verificationNumber').value.trim();
-    
+      let verification = document.getElementById('verificationNumber').value.trim();
       if (password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
@@ -611,14 +406,12 @@
         alert("Please enter a verification number.");
         return;
       }
-    
       let userData = { firstName, lastName, contactNumber, email, username, password, verification };
       localStorage.setItem('secretWordsUser', JSON.stringify(userData));
       currentUser = username;
       document.getElementById('registrationForm').reset();
       showLoginSection();
     }
-    
     function loginUser() {
       let loginUsername = document.getElementById('loginUsername').value.trim();
       let loginPassword = document.getElementById('loginPassword').value;
@@ -630,28 +423,23 @@
       let userData = JSON.parse(storedData);
       if (loginUsername === userData.username && loginPassword === userData.password) {
         currentUser = userData.username;
-        display.value = "User: " + userData.username + " | Pass: " + userData.password;
-        // Set welcome messages in Welcome and Notepad sections
-        document.getElementById("welcomeUser").innerText = currentUser;
-        document.getElementById("userName").innerText = currentUser;
-        // Show welcome overlay then transition to notepad
-        showWelcomeSection();
+        document.getElementById('welcomeMessage').innerText = "Welcome, " + userData.username + "!";
+        showNotepadSection();
       } else {
         alert("Invalid credentials. Please try again.");
       }
     }
-    
     function logout() {
       alert("Logged out!");
       currentUser = null;
       showCalculatorSection();
     }
     
-    /* NOTEPAD LOGIC WITH TIMESTAMP & SIMULATED DATABASE STORAGE */
-    function saveNotepad() {
+    // Notepad Logic with Timestamp, Auto-Save, and Simulated Storage
+    function saveNotepad(manual = true) {
       let notes = document.getElementById('notepadTextarea').value;
       if (!currentUser) {
-        alert("Please log in to save your notes.");
+        if (manual) alert("Please log in to save your notes.");
         return;
       }
       let now = new Date();
@@ -662,9 +450,8 @@
       existingNotes.push(noteData);
       localStorage.setItem(userNotesKey, JSON.stringify(existingNotes));
       document.getElementById('lastSaved').innerText = "Last Saved On: " + timestamp;
-      alert("Notes saved on " + timestamp);
+      if (manual) alert("Notes saved on " + timestamp);
     }
-    
     function loadNotepad() {
       if (!currentUser) return;
       let userNotesKey = "notes_" + currentUser;
@@ -675,44 +462,86 @@
       }
     }
     
-    /* FILTER NOTES BASED ON SELECTED CALENDAR DATE */
-    function filterNotesByDate() {
-      let selectedDate = document.getElementById('calendarInput').value; // format: YYYY-MM-DD
-      if (!selectedDate || !currentUser) {
-        document.getElementById('filteredNotes').innerHTML = '';
-        return;
-      }
-      let userNotesKey = "notes_" + currentUser;
-      let existingNotes = JSON.parse(localStorage.getItem(userNotesKey)) || [];
-      // Filter notes where the timestamp date matches the selected date
-      let filtered = existingNotes.filter(note => {
-        let noteDate = new Date(note.timestamp).toISOString().split('T')[0];
-        return noteDate === selectedDate;
-      });
-      let container = document.getElementById('filteredNotes');
-      if (filtered.length > 0) {
-        container.innerHTML = '<h6>Notes for ' + selectedDate + ':</h6>';
-        filtered.forEach(note => {
-          container.innerHTML += '<p><em>' + note.timestamp + '</em>: ' + note.notes + '</p>';
-        });
+    // Online Search Functionality (Simulated)
+    function searchOnline() {
+      let query = document.getElementById('onlineSearchInput').value.trim();
+      if (query !== "") {
+        alert("Searching online for: " + query);
       } else {
-        container.innerHTML = '<p>No notes found for ' + selectedDate + '.</p>';
+        alert("Please enter a search term.");
       }
     }
     
-    // On window load: Set theme and initialize tooltips
+    // Real-Time Clock Update
+    function updateClock() {
+      let now = new Date();
+      document.getElementById('realTimeClock').innerText = now.toLocaleTimeString();
+    }
+    function autoSaveNotepad() {
+      if (currentUser) saveNotepad(false);
+    }
+    
+    // Voice Message Recording Functionality (voice recording starts immediately after mic press)
+    let voiceMediaRecorder;
+    let voiceAudioChunks = [];
+    function toggleVoiceMessage() {
+      if (!voiceMediaRecorder) {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+          voiceMediaRecorder = new MediaRecorder(stream);
+          voiceMediaRecorder.addEventListener("dataavailable", event => {
+            voiceAudioChunks.push(event.data);
+          });
+          voiceMediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(voiceAudioChunks, { type: "audio/webm" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = audioUrl;
+            // Append the recorded audio to the voiceMessages container
+            document.getElementById("voiceMessages").appendChild(audio);
+            voiceAudioChunks = [];
+          });
+          // Start recording immediately when the mic button is pressed
+          voiceMediaRecorder.start();
+          document.getElementById("voiceMsgBtn").innerHTML = '<i class="bi bi-stop-fill"></i>';
+        }).catch(err => {
+          console.error("Error accessing microphone:", err);
+        });
+      } else if (voiceMediaRecorder.state === "recording") {
+        voiceMediaRecorder.stop();
+        document.getElementById("voiceMsgBtn").innerHTML = '<i class="bi bi-mic"></i>';
+        voiceMediaRecorder = null;
+      }
+    }
+    
+    // Image Capture Functionality
+    function handleImageInput(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          document.getElementById("imagePreview").innerHTML = "";
+          document.getElementById("imagePreview").appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    // On window load
     window.onload = function() {
       currentTheme = localStorage.getItem('theme') || 'light-theme';
-      document.querySelector('.calculator-card').className = 'calculator-card card shadow-lg ' + currentTheme;
-      if (currentTheme === 'auto-theme') {
-        let isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.querySelector('.calculator-card').className = 'calculator-card card shadow-lg ' + (isDarkMode ? 'dark-theme' : 'light-theme');
-      }
       loadNotepad();
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      tooltipTriggerList.map(function (tooltipTriggerEl) {
+      let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
       });
+      setInterval(updateClock, 1000);
+      setInterval(autoSaveNotepad, 60000);
+      // Set up event listeners for voice message and image capture
+      document.getElementById("voiceMsgBtn").addEventListener("click", toggleVoiceMessage);
+      document.getElementById("imageInput").addEventListener("change", handleImageInput);
     }
   </script>
 </body>
